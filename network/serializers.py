@@ -55,7 +55,6 @@ class NetworkNodeSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         # Обновляем поля на верхнем уровне модели NetworkNode
         instance.name = validated_data.get('name', instance.name)
-        instance.debt = validated_data.get('debt', instance.debt)
         instance.save()
 
         # Обновляем вложенные объекты, если они были предоставлены в запросе
@@ -77,3 +76,9 @@ class NetworkNodeSerializer(serializers.ModelSerializer):
                 instance.products.add(product)
 
         return instance
+
+    def validate_debt(self, value):
+        # Проверяем, что поле "debt" не изменяется при обновлении объекта (PUT и PATCH)
+        if self.instance and value != self.instance.debt:
+            raise serializers.ValidationError("Изменение поля 'debt' недопустимо.")
+        return value
