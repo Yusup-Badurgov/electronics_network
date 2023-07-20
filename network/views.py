@@ -1,6 +1,9 @@
 from django.http import QueryDict
 from rest_framework import viewsets, filters
+from rest_framework.permissions import IsAuthenticated
+
 from .models import Contact, Product, NetworkNode
+from .permissions import CustomPermissions
 from .serializers import ContactSerializer, ProductSerializer, NetworkNodeSerializer
 
 
@@ -10,7 +13,7 @@ class ContactViewSet(viewsets.ModelViewSet):
     """
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
-
+    permission_classes = [IsAuthenticated, CustomPermissions]
 
 class ProductViewSet(viewsets.ModelViewSet):
     """
@@ -18,7 +21,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-
+    permission_classes = [IsAuthenticated, CustomPermissions]
 
 class NetworkNodeViewSet(viewsets.ModelViewSet):
     """
@@ -28,6 +31,7 @@ class NetworkNodeViewSet(viewsets.ModelViewSet):
     serializer_class = NetworkNodeSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['contacts__country']
+    permission_classes = [IsAuthenticated, CustomPermissions]
 
     def update(self, request, *args, **kwargs):
         """

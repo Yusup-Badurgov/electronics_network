@@ -33,13 +33,13 @@ class LoginViews(APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         login(request=request, user=user)
-        return Response({"message": "User logged in successfully"}, status=status.HTTP_200_OK)
+        return Response({"message": "Пользователь успешно авторизовался"}, status=status.HTTP_200_OK)
 
 
 class UserLogoutView(APIView):
     def post(self, request):
         logout(request)
-        return Response({'message': 'Logout successful.'})
+        return Response({'message': 'Успешный выход.'})
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
